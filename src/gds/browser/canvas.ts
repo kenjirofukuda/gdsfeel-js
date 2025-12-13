@@ -4,8 +4,7 @@
 /// <reference path="../elements.ts" />
 /// <reference path="../container.ts" />
 
-import * as GEO from '../../geometry/geo.js';
-// import * as dom from 'dom';
+import * as GEO from '../../geometry/geo';
 
 import {
   GElement,
@@ -70,7 +69,7 @@ function strokeSlantCrossV2(ctx: Canvas2D, port: GEO.Viewport, x: number, y: num
 
 const strokeSlantCross = strokeSlantCrossV2;
 
-function strokePoints(ctx: Canvas2D, port: GEO.Viewport, points: GEO.Coords, closing: boolean = false) {
+function strokePoints(ctx: Canvas2D, _port: GEO.Viewport, points: GEO.Coords, closing: boolean = false) {
   ctx.beginPath();
   ctx.moveTo(points[0][0], points[0][1]);
   for (let ce of points.slice(1)) {
@@ -105,7 +104,7 @@ Boundary.prototype.drawOn = function (ctx: Canvas2D, port: GEO.Viewport): void {
   strokePoints(ctx, port, this.vertices(), true);
 };
 
-declare module '../elements.js' {
+declare module '../elements' {
   interface Path {
     strokeCenterline(ctx: Canvas2D, port: Viewport): void;
     strokeOutline(ctx: Canvas2D, port: Viewport): void;
@@ -152,9 +151,9 @@ Aref.prototype.drawOn = function (ctx: Canvas2D, port: GEO.Viewport): void {
   if (!this.refStructure) {
     return;
   }
-  if (this.refName === 'PC' && this.elkey === 5) {
-    const debug = true;
-  }
+  // if (this.refName === 'PC' && this.elkey === 5) {
+  //   const debug = true;
+  // }
   for (let mat of this.repeatedTransforms()) {
     ctx.save();
     port.pushTransform(mat);
@@ -280,20 +279,20 @@ export class StructureView {
         self.needsRedraw = true;
       }
     };
-    this.resizeFunction = (v: StructureView) => {};
-    if (false) {
-      this.port.transformFunction = function () {
-        const domMat = self.ctx.getTransform();
-        const createjsMat = new GEO.Matrix2D();
-        createjsMat.a = domMat.a;
-        createjsMat.b = domMat.b;
-        createjsMat.c = domMat.c;
-        createjsMat.d = domMat.d;
-        createjsMat.tx = domMat.e;
-        createjsMat.ty = domMat.f;
-        return createjsMat;
-      };
-    }
+    this.resizeFunction = (_v: StructureView) => {};
+    // if (false) {
+    //   this.port.transformFunction = function () {
+    //     const domMat = self.ctx.getTransform();
+    //     const createjsMat = new GEO.Matrix2D();
+    //     createjsMat.a = domMat.a;
+    //     createjsMat.b = domMat.b;
+    //     createjsMat.c = domMat.c;
+    //     createjsMat.d = domMat.d;
+    //     createjsMat.tx = domMat.e;
+    //     createjsMat.ty = domMat.f;
+    //     return createjsMat;
+    //   };
+    // }
   }
 
   set structure(s: Structure) {
@@ -380,7 +379,7 @@ export function loadIt(structureView?: StructureView, portId?: string): void {
   window.addEventListener("resize", () => {
     clearTimeout(queue);
     queue = setTimeout(() => {
-      structureView.resizeFunction(structureView);
+      window.structureView.resizeFunction(window.structureView);
     }, waitMSecs);
   }, false);
   structureView.resizeFunction(structureView);
@@ -407,7 +406,9 @@ export function adjustPortSize(structureView?: StructureView): void {
   $("#canvas").attr("width", String(w));
   $("#canvas").attr("height", String(h));
   if (structureView) {
-    structureView.port.setSize(w, h);
+    if (w != undefined && h != undefined ) {
+      structureView.port.setSize(w, h);
+    }
   }
   $("#canvas-wrapper").css("display", "flex");
 }

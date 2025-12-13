@@ -1,9 +1,9 @@
 
 // can't import createjs in typescript environment
 // import * as createjs from 'createjs-module';
-import { Point, point_x, point_y, IndexedPoint2D } from './Point.js';
-import { Rectangle } from './Rectangle.js';
-import { Matrix2D }  from './Matrix2D.js';
+import { Point, point_x, point_y, IndexedPoint2D, PointLike } from './Point';
+import { Rectangle } from './Rectangle';
+import { Matrix2D }  from './Matrix2D';
 
 type ViewportArgProc = (vp: Viewport) => void;
 type MatrixFunction = () => Matrix2D;
@@ -248,6 +248,6 @@ Number.prototype.roundDigits = function (dig: number): number {
 };
 
 
-export { Point, point_x, point_y }     from './Point.js';
-export { Rectangle } from './Rectangle.js';
-export { Matrix2D }  from './Matrix2D.js';
+export { Point, point_x, point_y, PointLike } from './Point';
+export { Rectangle } from './Rectangle';
+export { Matrix2D }  from './Matrix2D';

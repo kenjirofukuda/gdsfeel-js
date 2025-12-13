@@ -1,9 +1,9 @@
 /// <reference path="../geometry/geo.ts" />
 /// <reference path="gds.ts" />
 /// <reference path="container.ts" />
-import * as GEO from '../geometry/geo.js';
-import { GObject, BUTT_END } from './gds.js';
-import { Structure, Library } from './container.js';
+import * as GEO from '../geometry/geo';
+import { GObject, BUTT_END } from './gds';
+import { Structure, Library } from './container';
 
 export type CE = GEO.CE;
 export type Coords = GEO.Coords;
@@ -215,12 +215,15 @@ export class Sref extends GElement {
     return rtx;
   }
 
-  _basicOutlinePoints(): Array<GEO.PointLike> {
-    const structureExtent: GEO.Rectangle = this.refStructure.dataExtent();
-    const points = structureExtent.pointArray().map((p: GEO.Point) => {
-      return this.transform().transformPoint(p.x, p.y);
-    });
-    return points;
+  _basicOutlinePoints(): Array<GEO.Point> {
+    let result: Array<GEO.Point> = [];
+    if (this.refStructure) {
+      const structureExtent: GEO.Rectangle = this.refStructure.dataExtent();
+      result = structureExtent.pointArray().map((p: GEO.Point) => {
+        return this.transform().transformPoint(p.x, p.y);
+      });
+    }
+    return result;
   }
 
   _lookupDataExtent(): GEO.Rectangle {
@@ -306,7 +309,7 @@ export class Aref extends Sref {
   }
 
   _lookupRepeatedTransforms(): Array<GEO.Matrix2D> {
-    let result = [];
+    let result:Array<GEO.Matrix2D> = [];
     for (let ix = 0; ix < this.cols; ix++) {
       for (let iy = 0; iy < this.rows; iy++) {
         const otx = new GEO.Matrix2D();
@@ -485,7 +488,7 @@ function getEndDeltaXY(hw: number, p1: CE, p2: CE) {
 };
 
 function pathOutlineCoords(coords: Coords, pathType: number, width: number): Coords {
-  const points = [];
+  const points: Coords = [];
   const hw = width / 2.0;
   const numPoints = coords.length;
   if (numPoints < 2) {

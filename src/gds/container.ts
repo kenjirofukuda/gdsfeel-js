@@ -2,9 +2,9 @@
 /// <reference path="./gds.ts" />
 /// <reference path="./elements.ts" />
 
-import * as GEO from '../geometry/geo.js';
-import { GObject } from './gds.js';
-import { GElement} from './elements.js';
+import * as GEO from '../geometry/geo';
+import { GObject } from './gds';
+import { GElement} from './elements';
 
 export class Structure extends GObject {
   _elements: Array<GElement>;
@@ -92,8 +92,10 @@ export class Structure extends GObject {
     this.sfAttr = { ...o.sfAttr };
     o._elements.forEach((e) => {
       const elem = GElement.fromType(e.hash.type);
-      elem.loadFromObject(e);
-      this.addElement(elem);
+      if (elem) {
+        elem.loadFromObject(e);
+        this.addElement(elem);
+      }
     });
   }
 

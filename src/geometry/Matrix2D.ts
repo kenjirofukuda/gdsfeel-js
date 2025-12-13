@@ -1,6 +1,6 @@
 // @see https://github.com/CreateJS/EaselJS/blob/master/src/easeljs/geom/Matrix2D.js
 
-import { PointLike } from './Point.js';
+import { Point } from './Point';
 
 export class Matrix2D {
   /**
@@ -430,8 +430,8 @@ export class Matrix2D {
    * @param {Point | Object} [pt] An object to copy the result into. If omitted a generic object with x/y properties will be returned.
    * @return {Point} This matrix. Useful for chaining method calls.
    **/
-  transformPoint(x: number, y: number, pt?: PointLike): PointLike {
-    pt = pt || {x: 0, y: 0} ;
+  transformPoint(x: number, y: number, pt?: Point): Point {
+    pt = pt || new Point(); ;
     pt.x = x*this.a+y*this.c+this.tx;
     pt.y = x*this.b+y*this.d+this.ty;
     return pt;

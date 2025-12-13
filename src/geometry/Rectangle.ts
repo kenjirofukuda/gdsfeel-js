@@ -1,6 +1,6 @@
 // @see https://github.com/CreateJS/EaselJS/blob/master/src/easeljs/geom/Rectangle.js
 
-import { Point } from './Point.js';
+import { Point } from './Point';
 
 export class Rectangle {
   /**
@@ -145,18 +145,18 @@ export class Rectangle {
 
   /**
    * Returns a new rectangle which describes the intersection (overlap) of this rectangle and the specified rectangle,
-   * or null if they do not intersect.
+   * or undefined if they do not intersect.
    * @method intersection
    * @param {Rectangle} rect The rectangle to calculate an intersection with.
-   * @return {Rectangle} A new rectangle describing the intersection or null.
+   * @return {Rectangle} A new rectangle describing the intersection or undefined.
    */
-  intersection(rect: Rectangle): Rectangle {
+  intersection(rect: Rectangle): Rectangle | undefined {
     var x1 = rect.x, y1 = rect.y, x2 = x1+rect.width, y2 = y1+rect.height;
     if (this.x > x1) { x1 = this.x; }
     if (this.y > y1) { y1 = this.y; }
     if (this.x + this.width < x2) { x2 = this.x + this.width; }
     if (this.y + this.height < y2) { y2 = this.y + this.height; }
-    return (x2 <= x1 || y2 <= y1) ? null : new Rectangle(x1, y1, x2-x1, y2-y1);
+    return (x2 <= x1 || y2 <= y1) ? undefined : new Rectangle(x1, y1, x2-x1, y2-y1);
   }
 
   /**
@@ -203,7 +203,7 @@ export class Rectangle {
   }
 
   pointArray(): Point[] {
-    const points = [];
+    const points: Array<Point> = [];
     points.push(new Point(this.x, this.y));
     points.push(new Point(this.x, this.y + this.height));
     points.push(new Point(this.x + this.width, this.y + this.height));

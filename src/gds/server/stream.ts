@@ -4,8 +4,8 @@
 /// <reference path="../container.ts" />
 import fs from 'node:fs';
 
-import { Library, Structure } from '../container.js';
-import { GElement } from '../elements.js';
+import { Library, Structure } from '../container';
+import { GElement } from '../elements';
 
 // DATA TYPE
 const NO_DATA   = 0;
@@ -238,7 +238,7 @@ export class Inform {
     return this._gdsPath;
   }
 
-  get library(): Library {
+  get library(): Library | undefined {
     return this._library;
   }
 
@@ -281,7 +281,7 @@ export class Inform {
   _handleBuffer(buff: Buffer): void {
     const rType: number = buff[0];
     const dType: number = buff[1];
-    const decoded = [];
+    const decoded: any = [];
     const body = buff.subarray(2);
     switch (dType) {
       case BIT_ARRAY:
@@ -307,17 +307,21 @@ export class Inform {
         if (rType == BGNLIB) {
           this._library = new Library();
         }
-        this._library.sfAttr[recordSymbol(rType)] = decoded[dType];
+        if (this._library) {
+          this._library.sfAttr[recordSymbol(rType)] = decoded[dType];
+        }
         break;
       case BGNSTR:
       case STRNAME:
         if (rType == BGNSTR) {
           this._structure = new Structure();
         }
-        this._structure.sfAttr[recordSymbol(rType)] = decoded[dType];
+        if (this._library && this._structure) {
+          this._structure.sfAttr[recordSymbol(rType)] = decoded[dType];
+        }
         break;
       case ENDSTR:
-        if (this._structure) {
+        if (this._library && this._structure) {
           this._library.addStructure(this._structure);
           this._structure = undefined;
         }
@@ -352,7 +356,9 @@ export class Inform {
       case PROPATTR:
       case PROPVALUE:
       case SNAME:
-        this._element.sfAttr[recordSymbol(rType)] = decoded[dType];
+        if (this._element) {
+          this._element.sfAttr[recordSymbol(rType)] = decoded[dType];
+        }
         break;
 
       case ENDEL:
@@ -366,7 +372,4 @@ export class Inform {
     }
   }
 
-  exampleList(): Array<string> {
-    return fs.readdirSync('.');
-  }
 };

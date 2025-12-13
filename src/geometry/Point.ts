@@ -1,7 +1,7 @@
 // @see https://github.com/CreateJS/EaselJS/blob/master/src/easeljs/geom/Point.js
 
-export type IndexedPoint2D = Array<0 | 1>;
-export type IndexedPoint3D = Array<0 | 1 | 2>;
+export type IndexedPoint2D = [number, number];
+export type IndexedPoint3D = [number, number, number];
 
 export interface Point2DInit {
   x: number;
@@ -65,10 +65,10 @@ export class Point implements Point2DInit {
    * @param {Number} angle The angle, in radians, of the polar pair.
    * @param {Point | PointLike} [pt] An object to copy the result into. If omitted a new {{#crossLink "Point"}}{{/crossLink}}
    * will be returned.
-   * @return {PointLike} The new, interpolated point.
+   * @return {Point} The new, interpolated point.
    * @static
    */
-  static polar(len: number, angle: number, pt: Point | PointLike ): PointLike {
+  static polar(len: number, angle: number, pt: Point) : Point {
     pt = pt || new Point();
     pt.x = len * Math.cos(angle);
     pt.y = len * Math.sin(angle);
@@ -96,7 +96,7 @@ export class Point implements Point2DInit {
    * @return {Point} A new interpolated Point, or the `pt` passed in the 4th parameter with the interpolated values.
    * @static
    */
-  static interpolate(pt1: PointLike, pt2: PointLike, f: number, pt: Point | PointLike): PointLike {
+  static interpolate(pt1: Point, pt2: Point, f: number, pt: Point): Point {
     pt = pt || new Point();
     pt.x = pt2.x + f * (pt1.x - pt2.x);
     pt.y = pt2.y + f * (pt1.y - pt2.y);
@@ -111,8 +111,8 @@ export class Point implements Point2DInit {
    * @chainable
    */
   copy (point: PointLike): Point {
-    this.x = point.x;
-    this.y = point.y;
+    this.x = point_x(point);
+    this.y = point_y(point);
     return this;
   }
 
