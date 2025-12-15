@@ -18,10 +18,22 @@
         "default": "./dist/gds/browser/index.js"
       }
     },
+    "./browser/*": {
+      "import": {
+        "types": "./dist/gds/browser/*.d.ts",
+        "default": "./dist/gds/browser/*.js"
+      }
+    },
     "./server": {
       "import": {
         "types": "./dist/gds/server/index.d.ts",
         "default": "./dist/gds/server/index.js"
+      }
+    },
+    "./server/*": {
+      "import": {
+        "types": "./dist/gds/server/*.d.ts",
+        "default": "./dist/gds/server/*.js"
       }
     }
   },
