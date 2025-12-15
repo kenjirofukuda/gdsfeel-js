@@ -2,11 +2,31 @@
   "name": "gdsfeel-js",
   "version": "1.0.0",
   "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./browser": {
+      "import": {
+        "types": "./dist/gds/browser/index.d.ts",
+        "default": "./dist/gds/browser/index.js"
+      }
+    },
+    "./server": {
+      "import": {
+        "types": "./dist/gds/server/index.d.ts",
+        "default": "./dist/gds/server/index.js"
+      }
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kenjirofukuda/gdsfeel-js.git"
   },
-    "author": "kenjirofukuda (https://github.com/kenjirofukuda)",
+  "author": "kenjirofukuda (https://github.com/kenjirofukuda)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kenjirofukuda/gdsfeel-js/issues"
@@ -27,6 +47,8 @@
     "sprintf-js": "^1.1.3"
   },
   "scripts": {
-    "build": "tsc"
+    "start": "tsc -w",
+    "build": "tsc",
+    "prepare": "npm run build"
   }
 }

@@ -1,12 +1,14 @@
-/// <reference path="../geometry/geo.ts" />
+/// <reference path="../geometry/index.ts" />
 /// <reference path="gds.ts" />
 /// <reference path="container.ts" />
-import * as GEO from '../geometry/geo';
+import * as GEO from '../geometry';
 import { GObject, BUTT_END } from './gds';
 import { Structure, Library } from './container';
 
-export type CE = GEO.CE;
-export type Coords = GEO.Coords;
+type CE = GEO.CE;
+type Coords = GEO.Coords;
+
+export type SupportedElementClass = Text | Boundary | Path | Sref | Aref;
 
 export class GElement extends GObject {
   hash: any;
@@ -93,11 +95,11 @@ export class GElement extends GObject {
     stream['dataExtent'] = this.dataExtent();
   }
 
-  static fromObject2(hash: any) {
+  static fromObject2(hash: any): SupportedElementClass | undefined {
     return this.fromType(hash.type);
   }
 
-  static fromType(type: number) {
+  static fromType(type: number): SupportedElementClass | undefined {
     const hash = {type: type};
     if (type === 9) { // PATH
       return new Path(hash);
@@ -413,24 +415,24 @@ export class Text extends GElement {
 }
 
 
-export class Point extends GElement {
+// class Point extends GElement {
 
-  constructor(hash: any) {
-    super(hash);
-  }
+//   constructor(hash: any) {
+//     super(hash);
+//   }
 
-  toString(): string {
-    return "Point(" + this.vertices()[0] + ")";
-  }
+//   toString(): string {
+//     return "Point(" + this.vertices()[0] + ")";
+//   }
 
-  _lookupDataExtent() {
-    return GEO.MakeRect(this.x, this.y, 0, 0);
-  }
+//   _lookupDataExtent() {
+//     return GEO.MakeRect(this.x, this.y, 0, 0);
+//   }
 
-  typeString(): string {
-    return 'POINT';
-  }
-};
+//   typeString(): string {
+//     return 'POINT';
+//   }
+// };
 
 
 function getAngle(x1: number, y1: number, x2: number, y2: number) {

@@ -4,3 +4,4 @@ README.*
 !README.org
 /.next/
 /.vscode/
+/*.tgz

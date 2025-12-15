@@ -1,22 +1,22 @@
 "use browser";
-/// <reference path="../../geometry/geo.ts" />
+/// <reference path="../../geometry/index.ts" />
 /// <reference path="../gds.ts" />
 /// <reference path="../elements.ts" />
 /// <reference path="../container.ts" />
 
-import * as GEO from '../../geometry/geo';
+import * as GEO from '../../geometry';
 
 import {
   GElement,
-  Point,
+  /* Point, */
   Path,
   Boundary,
   Text,
   Sref,
   Aref,
-} from '../elements.js';
+} from '../elements';
 
-import { Structure } from '../container.js';
+import { Structure } from '../container';
 
 import $ from 'jquery';
 import { sprintf } from "sprintf-js";
@@ -82,7 +82,7 @@ function strokePoints(ctx: Canvas2D, _port: GEO.Viewport, points: GEO.Coords, cl
 }
 
 
-declare module '../elements.js' {
+declare module '../elements' {
   interface GElement {
     drawOn(ctx: Canvas2D, port: Viewport): void;
   }
@@ -171,10 +171,10 @@ Aref.prototype.drawOn = function (ctx: Canvas2D, port: GEO.Viewport): void {
   strokeSlantCross(ctx, port, this.x, this.y);
 };
 
-// @override
-Point.prototype.drawOn = function (ctx: Canvas2D, port: GEO.Viewport): void {
-  strokeSlantCross(ctx, port, this.x, this.y);
-};
+// // @override
+// Point.prototype.drawOn = function (ctx: Canvas2D, port: GEO.Viewport): void {
+//   strokeSlantCross(ctx, port, this.x, this.y);
+// };
 
 export class Tracking {
   view: StructureView;
