@@ -49,6 +49,7 @@
   "scripts": {
     "start": "tsc -w",
     "build": "tsc",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "postinstall": "npm run build"
   }
 }
