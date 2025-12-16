@@ -81,7 +81,6 @@ function strokePoints(ctx: Canvas2D, _port: GEO.Viewport, points: GEO.Coords, cl
   ctx.stroke();
 }
 
-
 declare module '../elements' {
   interface GElement {
     drawOn(ctx: Canvas2D, port: Viewport): void;
@@ -366,23 +365,24 @@ export class StructureView {
   }
 };
 
-
 export function loadIt(structureView?: StructureView, portId?: string): void {
   const REDRAW_INTERVAL_MSECS = 100;
   portId = portId || "canvas";
   structureView = structureView ?? new StructureView(portId);
   window.structureView = structureView;
-  let queue: NodeJS.Timeout | undefined = undefined;
-  const waitMSecs = 300;
 
-  // console.log({loadIt: structureView});
-  window.addEventListener("resize", () => {
-    clearTimeout(queue);
-    queue = setTimeout(() => {
-      window.structureView.resizeFunction(window.structureView);
-    }, waitMSecs);
-  }, false);
-  structureView.resizeFunction(structureView);
+  const resizeOvserver = new ResizeObserver(entries => {
+    entries.forEach(entry => {
+      const {width, height} = entry.contentRect;
+      console.log({contentRect: [width, height]});
+      structureView.resizeFunction(structureView);
+    });
+  });
+
+  const wrapper = document.querySelector('#canvas-wrapper');
+  if (wrapper) {
+    resizeOvserver.observe(wrapper);
+  }
 
   structureView.fit();
   setInterval(() => {
