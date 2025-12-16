@@ -279,19 +279,6 @@ export class StructureView {
       }
     };
     this.resizeFunction = (_v: StructureView) => {};
-    // if (false) {
-    //   this.port.transformFunction = function () {
-    //     const domMat = self.ctx.getTransform();
-    //     const createjsMat = new GEO.Matrix2D();
-    //     createjsMat.a = domMat.a;
-    //     createjsMat.b = domMat.b;
-    //     createjsMat.c = domMat.c;
-    //     createjsMat.d = domMat.d;
-    //     createjsMat.tx = domMat.e;
-    //     createjsMat.ty = domMat.f;
-    //     return createjsMat;
-    //   };
-    // }
   }
 
   set structure(s: Structure) {
@@ -374,7 +361,7 @@ export function loadIt(structureView?: StructureView, portId?: string): void {
   const resizeOvserver = new ResizeObserver(entries => {
     entries.forEach(entry => {
       const {width, height} = entry.contentRect;
-      console.log({contentRect: [width, height]});
+      //console.log({contentRect: [width, height]});
       structureView.resizeFunction(structureView);
     });
   });
@@ -416,4 +403,9 @@ export function adjustPortSize(structureView?: StructureView): void {
 export function adjustRowCenter(): void {
   $("#row2").height(0);
   $("#canvas-wrapper").height(0);
+}
+
+// @see https://tai-kun.dev/bin/is-webkit/
+export function isWebKit(): boolean {
+  return Date.parse("1969-12-31T23:59:59.9991Z") === 0;
 }
